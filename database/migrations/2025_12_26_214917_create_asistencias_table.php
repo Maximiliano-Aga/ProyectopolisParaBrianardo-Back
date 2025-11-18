@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('idAsist');
             $table->date('asisFecha');
             $table->boolean('asisJustificada')->default(false);
-            $table->foreignId('idEstadoAsist')->references('idEstados_Asist')->on('estados_asistencias')->constrained()->onDelete('cascade');
+            $table->$table->enum('estadoAsistencia', ['Presente', 'Ausente', 'Llegada Tarde']);
             $table->foreignId('idInscripcion')->references('idIncripciones')->on('inscripciones')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
