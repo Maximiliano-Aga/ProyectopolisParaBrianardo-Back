@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Inscripcion extends Model
 {
     protected $table = 'inscripciones';
-    protected $primaryKey = 'idIncripciones';
+    protected $primaryKey = 'idInscripciones';
     protected $fillable = [
         'cicloLectivo',
         'estadoInscrip',

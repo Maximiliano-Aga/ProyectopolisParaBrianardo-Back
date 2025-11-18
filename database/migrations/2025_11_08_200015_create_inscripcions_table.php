@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('inscripciones', function (Blueprint $table) {
-            $table->id('idIncripciones');
+            $table->id('idInscripciones');
             $table->year('cicloLectivo');
             $table->enum('estadoInscrip', ['aprobada', 'rechazada', 'pendiente'])->default('pendiente');
             $table->foreignId('idUsuario')->references('id')->on('users')->constrained()->onDelete('cascade');

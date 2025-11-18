@@ -120,10 +120,10 @@ class InscripcionController extends Controller
 
     public function inscripcionesPendientes() {
         try {
-            $inscripciones = Inscripcion::where('estadoInscrip', 'pendiente')->with(['user', 'materia'])->get();
+            $estado = 'pendiente';
+            $inscripciones = Inscripcion::where('estadoInscrip', $estado)->with(['usuario', 'materia'])->get();
             return response()->json($inscripciones);
         } catch (Exception $e) {
-            } catch (\Exception $e) {
             return response()->json(['error' => 'Error al obtener inscripciones', 'detalle' => $e->getMessage()], 500);
         }
     }
