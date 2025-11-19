@@ -127,4 +127,13 @@ class InscripcionController extends Controller
             return response()->json(['error' => 'Error al obtener inscripciones', 'detalle' => $e->getMessage()], 500);
         }
     }
+
+    public function inscripcionPorIdMateria($idMateria) {
+        try {
+            $inscripciones = Inscripcion::where('idMateria', $idMateria)->with(['usuario'])->get();
+            return response()->json($inscripciones);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Error al obtener inscripciones', 'detalle' => $e->getMessage()], 500);
+        }
+    }
 }

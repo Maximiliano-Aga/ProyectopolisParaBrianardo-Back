@@ -11,7 +11,7 @@ class asistencias extends Model
   protected $fillable = [
     'asisFecha',
     'asisJustificada',
-    'idEstadoAsist',
+    'estadoAsistencia',
     'idInscripcion'
   ];
 }

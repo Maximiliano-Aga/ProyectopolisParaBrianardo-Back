@@ -60,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [InscripcionController::class, 'destroy'])->middleware('role:admin');
     });
     Route::get('inscripcionesPendientes', [InscripcionController::class, 'inscripcionesPendientes'])->middleware('role:admin');
+    Route::get('inscripcionesPorMateria/{idMateria}', [InscripcionController::class, 'inscripcionPorIdMateria'])->middleware('role:admin|profesor');
 
     /* Asistencias */
     Route::prefix('asistencias')->group(function () {
