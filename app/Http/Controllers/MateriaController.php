@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Materia;
+use App\Models\Inscripcion;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
 use Symfony\Polyfill\Intl\Idn\Idn;
+use App\Models\User;
+use Exception;
 
 class MateriaController extends Controller
 {
@@ -130,6 +133,43 @@ class MateriaController extends Controller
             return response()->json(['mensaje' => 'Materia eliminada'], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error al eliminar materia', 'detalle' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getMateriasPorUsuario($userId)
+    {
+        try {
+            // Verificar que el usuario exista
+            User::findOrFail($userId);
+        
+            // Obtener materias a las que está inscripto
+            $materias = Materia::whereIn('id', function ($query) use ($userId) {
+                    $query->select('idMateria')
+                            ->from('inscripciones')
+                            ->where('idUsuario', $userId)
+                          ->where('estadoInscrip', 'aprobada'); // opcional
+                })
+                ->select([
+                    'id',
+                    'matNombre',
+                    'carrera_id',
+                    'created_at',
+                    'updated_at'
+                ])
+                ->get();
+                
+            return response()->json($materias, 200);
+                
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Usuario no encontrado.'
+            ], 404);
+        
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'Error al obtener las materias',
+                'detalle' => $e->getMessage()
+            ], 500);
         }
     }
 }

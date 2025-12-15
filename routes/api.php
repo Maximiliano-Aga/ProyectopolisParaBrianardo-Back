@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\ContadorAsistenciasController;
 
 /* Public Routes (No authentication required) */
 
@@ -22,6 +23,8 @@ Route::get('roles', [RolesController::class, 'index']);
 
 /* Authenticated Routes (Requires Sanctum token) */
 Route::middleware('auth:sanctum')->group(function () {
+    // NUEVA RUTA: Reporte de Asistencias por Alumno
+    Route::get('reportes/asistencias/{userId}/{materiaId}', [ContadorAsistenciasController::class, 'getSummary']);
 
     /* Logout */
     Route::post('logout', [AuthController::class, 'logout']);
@@ -49,6 +52,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{id}', [MateriaController::class, 'show'])->middleware('role:admin|profesor|estudiante');
         Route::put('/{id}', [MateriaController::class, 'update'])->middleware('role:admin');
         Route::delete('/{id}', [MateriaController::class, 'destroy'])->middleware('role:admin');
+        Route::get('usuario/{userId}',[MateriaController::class, 'getMateriasPorUsuario'])->middleware('role:estudiante');
+
     });
 
     /* Inscripciones */
