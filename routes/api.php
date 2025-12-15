@@ -61,7 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::get('inscripcionesPendientes', [InscripcionController::class, 'inscripcionesPendientes'])->middleware('role:admin');
     Route::get('inscripcionesPorMateria/{idMateria}', [InscripcionController::class, 'inscripcionPorIdMateria'])->middleware('role:admin|profesor');
-
+    
     /* Asistencias */
     Route::prefix('asistencias')->group(function () {
         Route::get('/', [AsistenciasController::class, 'index'])->middleware('role:admin|profesor|estudiante');
@@ -70,6 +70,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}', [AsistenciasController::class, 'update'])->middleware('role:admin|profesor');
         Route::delete('/{id}', [AsistenciasController::class, 'destroy'])->middleware('role:admin');
     });
+    Route::get('asistenciasAusentes/{idMateria}/{fecha}', [AsistenciasController::class, 'asistenciasAusentes'])->middleware('role:admin');
 
     /* Asistencias estados */
     Route::prefix('estados_asistencias')->group(function () {

@@ -38,7 +38,7 @@ class AsistenciasController extends Controller
             $request->validate([
                 'asisFecha' => 'required',
                 'asisJustificada' => 'required|boolean',
-                'estadoAsistencia' => 'required|in:Presente, Ausente, LLegada Tarde',
+                'estadoAsistencia' => 'required|in:Presente,Ausente,Llegada Tarde',
                 'idInscripcion'=> 'required|int',
             ]);
             $asistencia = asistencias::create($request->all());
@@ -84,7 +84,7 @@ class AsistenciasController extends Controller
             $request->validate([
                 'asisFecha' => 'required',
                 'asisJustificada' => 'required|boolean',
-                'estadoAsistencia' => 'required|in:Presente, Ausente, LLegada Tarde',
+                'estadoAsistencia' => 'required|in:Presente,Ausente,Llegada Tarde',
                 'idInscripcion'=> 'required|int',
             ]);
             $asistencia = asistencias::find($id);
@@ -116,4 +116,29 @@ class AsistenciasController extends Controller
             return response()->json(['error' => 'Error al eliminar asistencia', 'detalle' => $e->getMessage()], 500);
         }
     }
+
+    public function asistenciasAusentes($idMateria, $fecha)
+    {
+        try {
+            $asistencias = asistencias::with(['inscripcion.usuario'])
+            ->where('asisFecha', $fecha)
+                ->whereHas('inscripcion', function ($query) use ($idMateria) {
+                    $query->where('idMateria', $idMateria);
+                })
+                ->get();
+
+            if ($asistencias->isEmpty()) {
+                return response()->json(['error' => 'No se encontraron asistencias'], 404);
+            }
+
+            return response()->json($asistencias, 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error'   => 'Error al obtener asistencias',
+                'detalle' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 }
