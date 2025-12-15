@@ -38,7 +38,7 @@ class AsistenciasController extends Controller
             $request->validate([
                 'asisFecha' => 'required',
                 'asisJustificada' => 'required|boolean',
-                'estadoAsistencia' => 'required|in:Presente, Ausente, LLegada Tarde',
+                'estadoAsistencia' => 'required|in:Presente,Ausente,Llegada Tarde',
                 'idInscripcion'=> 'required|int',
             ]);
             $asistencia = asistencias::create($request->all());
