@@ -14,7 +14,7 @@ class AsistenciasController extends Controller
     public function index()
     {
         try {
-            $asistencias = asistencias::all();
+            $asistencias = asistencias::with(['inscripcion.usuario', 'inscripcion.materia'])->get();
             return response()->json($asistencias);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error al obtener aistencias', 'detalle' => $e->getMessage()], 500);
